@@ -1,4 +1,4 @@
-export default function Sidebar() {
+export default function Sidebar({ isOpen }) {
   const categories = [
     "All",
     "Music",
@@ -10,7 +10,10 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-60 bg-white border-r p-4 hidden md:block">
+    <aside
+      className={`bg-white border-r p-4 fixed top-0 left-0 h-full w-60 transform transition-transform duration-300 z-50
+      ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:static md:block`}
+    >
       {categories.map((cat) => (
         <button
           key={cat}

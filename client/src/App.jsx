@@ -6,30 +6,31 @@ import HomePage from "./pages/HomePage";
 export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleSidebar = () => setIsSidebarOpen(v => !v);
   const closeSidebar = () => setIsSidebarOpen(false);
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-50">
+      {/* Fixed header (always on top) */}
       <Header onMenuClick={toggleSidebar} />
 
-      <div className="flex flex-1 relative">
-        {/* Sidebar */}
+      {/* Content under header */}
+      <div className="pt-16 flex relative">
+        {/* Sidebar (mobile = fixed overlay; desktop = layout column) */}
         <Sidebar isOpen={isSidebarOpen} />
 
-        {/* Overlay for mobile */}
+        {/* Mobile overlay: under header, above content; clicks close the sidebar */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+            className="fixed left-0 right-0 bottom-0 top-16 bg-black/50 z-[40] md:hidden"
             onClick={closeSidebar}
-          ></div>
+          />
         )}
 
-        {/* Main Content */}
-        <div className="flex-1 p-4">
+        {/* Main content fills remaining space; desktop push happens as sidebar width changes */}
+        <main className="flex-1 p-4">
           <HomePage />
-        </div>
+        </main>
       </div>
     </div>
   );

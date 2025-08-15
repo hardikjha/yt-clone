@@ -1,7 +1,11 @@
+import Header from "./components/Header";
+import HomePage from "./pages/HomePage";
+
 export default function App() {
   return (
-    <h1 className="text-4xl font-bold text-blue-600">
-      Tailwind is Working!
-    </h1>
+    <div className="bg-gray-50 min-h-screen">
+      <Header />
+      <HomePage />
+    </div>
   );
 }

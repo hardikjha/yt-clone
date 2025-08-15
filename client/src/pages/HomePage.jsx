@@ -1,4 +1,3 @@
-import Sidebar from "../components/Sidebar";
 import VideoCard from "../components/VideoCard";
 
 export default function HomePage() {
@@ -18,13 +17,10 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="flex">
-      <Sidebar />
-      <main className="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {videos.map((vid, idx) => (
-          <VideoCard key={idx} {...vid} />
-        ))}
-      </main>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {videos.map((vid, idx) => (
+        <VideoCard key={idx} {...vid} />
+      ))}
     </div>
   );
 }

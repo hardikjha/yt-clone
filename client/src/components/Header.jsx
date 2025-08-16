@@ -12,7 +12,7 @@ export default function Header({ onToggleSidebar }) {
         >
           <Menu size={24} />
         </button>
-        <h1 className="text-xl font-bold">ViewTube</h1>
+        <h1 className="text-xl font-bold">YouTube</h1>
       </div>
 
       {/* Middle: Search + Mic */}

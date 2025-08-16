@@ -1,6 +1,7 @@
 import { Menu, Search, Mic } from "lucide-react";
 import Tooltip from "./ui/Tooltip";
 import { useNavigate, useLocation } from "react-router-dom";
+import LogoImg from "../img/logo.png";
 
 export default function Header({ onToggleSidebar }) {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -34,7 +35,7 @@ export default function Header({ onToggleSidebar }) {
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
+          <img src={LogoImg} alt="Logo" className="w-10 h-10 object-contain" />
           <span className="text-2xl font-bold text-red-600 select-none">
             YouTube
           </span>

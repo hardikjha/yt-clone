@@ -1,35 +1,40 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import HomePage from "./pages/HomePage";
+import CategoryFilter from "./components/CategoryFilter";
+import VideoGrid from "./components/VideoGrid";
+import sampleVideos from "./data/sampleVideos";
 
 export default function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [category, setCategory] = useState("All");
 
-  const toggleSidebar = () => setIsSidebarOpen(v => !v);
-  const closeSidebar = () => setIsSidebarOpen(false);
+  const filteredVideos =
+    category === "All"
+      ? sampleVideos
+      : sampleVideos.filter((v) =>
+          v.title.toLowerCase().includes(category.toLowerCase())
+        );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Fixed header - always on top */}
-      <Header onMenuClick={toggleSidebar} />
+    <div className="flex flex-col min-h-screen">
+      {/* Header always on top */}
+      <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
-      {/* Content under header */}
-      <div className="pt-16 flex relative">
-        {/* Sidebar (mobile = fixed overlay; desktop = layout column) */}
-        <Sidebar isOpen={isSidebarOpen} />
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <Sidebar isOpen={sidebarOpen} />
 
-        {/* Mobile overlay: under header, above content; clicks close the sidebar */}
-        {isSidebarOpen && (
-          <div
-            className="fixed left-0 right-0 bottom-0 top-16 bg-black/50 z-[40] md:hidden"
-            onClick={closeSidebar}
-          />
-        )}
-
-        {/* Main content fills remaining space; desktop push happens as sidebar width changes */}
-        <main className="flex-1 p-4">
-          <HomePage />
+        {/* Main Content */}
+        <main
+          className={`flex-1 mt-14 transition-all duration-300 ${
+            sidebarOpen ? "ml-60" : "ml-0"
+          }`}
+        >
+          <CategoryFilter onCategoryChange={setCategory} />
+          <div className="p-4">
+            <VideoGrid videos={filteredVideos} />
+          </div>
         </main>
       </div>
     </div>

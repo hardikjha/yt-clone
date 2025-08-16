@@ -3,7 +3,7 @@ import Tooltip from "./ui/Tooltip";
 
 export default function Header({ onToggleSidebar }) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow flex items-center justify-between px-4 py-2">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow flex items-center justify-between px-4 py-2 h-[56px]">
       {/* Left: Hamburger + Logo */}
       <div className="flex items-center gap-4">
         <button
@@ -12,7 +12,7 @@ export default function Header({ onToggleSidebar }) {
         >
           <Menu size={24} />
         </button>
-        <h1 className="text-xl font-bold">YouTube Clone</h1>
+        <h1 className="text-xl font-bold">ViewTube</h1>
       </div>
 
       {/* Middle: Search + Mic */}
@@ -27,8 +27,6 @@ export default function Header({ onToggleSidebar }) {
             <Search size={20} />
           </button>
         </div>
-
-        {/* Mic with Tooltip */}
         <Tooltip text="Search with your voice">
           <button className="ml-3 p-2 rounded-full hover:bg-gray-100">
             <Mic size={22} />
@@ -36,9 +34,11 @@ export default function Header({ onToggleSidebar }) {
         </Tooltip>
       </div>
 
-      {/* Right: Profile */}
+      {/* Right: Sign In button */}
       <div className="flex items-center gap-4">
-        <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+        <button className="px-4 py-1 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-50">
+          Sign in
+        </button>
       </div>
     </header>
   );

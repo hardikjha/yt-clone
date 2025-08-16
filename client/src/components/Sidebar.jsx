@@ -1,31 +1,17 @@
 export default function Sidebar({ isOpen }) {
-  const categories = ["All", "Music", "Gaming", "News", "Sports", "Education", "Movies"];
-
   return (
     <aside
-      className={[
-        // Common
-        "bg-white transition-all duration-300 ease-in-out overflow-y-auto",
-        // height below the header (64px)
-        "h-[calc(100vh-64px)]",
-        // MOBILE: slide over content (above overlay, below header)
-        "fixed top-16 left-0 w-60 z-[50] transform",
-        isOpen ? "translate-x-0" : "-translate-x-full",
-        // DESKTOP: part of layout (push content). Width toggles 0 <-> 15rem
-        "md:static md:top-auto md:transform-none md:z-auto",
-        isOpen ? "md:w-60 md:border-r md:border-gray-200" : "md:w-0 md:border-0 md:overflow-hidden",
-      ].join(" ")}
+      className={`
+        fixed top-[56px] left-0 h-[calc(100vh-56px)] w-60 bg-white shadow-md transition-transform duration-300 z-40
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+      `}
     >
-      <nav className="p-4 space-y-1">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className="block w-full text-left px-4 py-2 rounded hover:bg-gray-100"
-          >
-            {cat}
-          </button>
-        ))}
-      </nav>
+      <ul className="p-4 space-y-4">
+        <li className="hover:bg-gray-100 p-2 rounded">Home</li>
+        <li className="hover:bg-gray-100 p-2 rounded">Trending</li>
+        <li className="hover:bg-gray-100 p-2 rounded">Subscriptions</li>
+        <li className="hover:bg-gray-100 p-2 rounded">Library</li>
+      </ul>
     </aside>
   );
 }

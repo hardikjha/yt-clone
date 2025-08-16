@@ -1,38 +1,44 @@
-import { Search } from "lucide-react";
+import { Menu, Search, Mic } from "lucide-react";
+import Tooltip from "./ui/Tooltip";
 
-export default function Header({ onMenuClick }) {
+export default function Header({ onToggleSidebar }) {
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 bg-white shadow z-[100]">
-      <div className="h-full px-4 flex items-center justify-between">
-        {/* Left: Hamburger + Logo */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onMenuClick}
-            className="text-2xl leading-none"
-            aria-label="Toggle sidebar"
-            title="Toggle sidebar"
-          >
-            &#9776;
-          </button>
-          <h1 className="text-xl font-bold text-red-600">YouTube</h1>
-        </div>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow flex items-center justify-between px-4 py-2">
+      {/* Left: Hamburger + Logo */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={onToggleSidebar}
+          className="p-2 rounded-full hover:bg-gray-100"
+        >
+          <Menu size={24} />
+        </button>
+        <h1 className="text-xl font-bold">YouTube Clone</h1>
+      </div>
 
-        {/* Middle: Search */}
-        <div className="flex flex-1 max-w-xl mx-4">
+      {/* Middle: Search + Mic */}
+      <div className="flex items-center flex-1 max-w-xl mx-6">
+        <div className="flex flex-1 border rounded-full overflow-hidden">
           <input
             type="text"
             placeholder="Search"
-            className="w-full border border-gray-300 rounded-l-full px-4 py-2 focus:outline-none"
+            className="flex-1 px-4 py-2 outline-none"
           />
-          <button className="bg-gray-100 border border-gray-300 rounded-r-full px-4 flex items-center justify-center">
-            <Search className="w-5 h-5 text-gray-600" />
+          <button className="bg-gray-100 px-4 flex items-center justify-center">
+            <Search size={20} />
           </button>
         </div>
 
-        {/* Right: Sign In */}
-        <button className="text-blue-600 border px-4 py-1 rounded-md hover:bg-blue-50">
-          Sign In
-        </button>
+        {/* Mic with Tooltip */}
+        <Tooltip text="Search with your voice">
+          <button className="ml-3 p-2 rounded-full hover:bg-gray-100">
+            <Mic size={22} />
+          </button>
+        </Tooltip>
+      </div>
+
+      {/* Right: Profile */}
+      <div className="flex items-center gap-4">
+        <div className="w-8 h-8 rounded-full bg-gray-300"></div>
       </div>
     </header>
   );

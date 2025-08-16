@@ -11,7 +11,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Fixed header (always on top) */}
+      {/* Fixed header - always on top */}
       <Header onMenuClick={toggleSidebar} />
 
       {/* Content under header */}

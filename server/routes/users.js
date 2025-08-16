@@ -1,83 +1,81 @@
 // server/routes/users.js
 import express from "express";
-import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
+import User from "../models/User.js";
 
-dotenv.config();
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
-// ===== REGISTER =====
+// REGISTER
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password, avatar } = req.body;
-    console.log("Register request body:", req.body);
 
-    // Check for missing fields
-    if (!username || !email || !password) {
-      return res.status(400).json({ error: "Please provide all required fields" });
-    }
-
-    // Check if user already exists
+    // Check if email already exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ error: "Email already registered" });
-    }
+    if (existingUser)
+      return res.status(400).json({ message: "Email already registered" });
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create new user
+    // Create user (password will be hashed automatically)
     const newUser = new User({
-      userId: crypto.randomUUID?.() || Date.now().toString(),
+      userId: Date.now().toString(),
       username,
       email,
-      password: hashedPassword,
-      avatar: avatar || "https://example.com/default-avatar.png",
+      password,
+      avatar,
       channels: [],
     });
 
     await newUser.save();
-    console.log("User saved to DB:", newUser);
 
-    // Sign JWT
-    const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET, {
-      expiresIn: "7d",
+    // Create JWT token
+    const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: "7d" });
+
+    res.json({
+      user: {
+        userId: newUser.userId,
+        username: newUser.username,
+        email: newUser.email,
+        avatar: newUser.avatar,
+        channels: newUser.channels,
+      },
+      token,
     });
-
-    res.json({ user: newUser, token });
   } catch (err) {
-    console.error("Register error:", err);
-    res.status(500).json({ error: "Server error" });
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-// ===== LOGIN =====
+// LOGIN
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("Login request body:", req.body);
 
-    if (!email || !password) {
-      return res.status(400).json({ error: "Please provide email and password" });
-    }
-
+    // Find user by email
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: "Invalid credentials" });
+    if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+    // Compare passwords
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
-      expiresIn: "7d",
+    // Create JWT token
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+
+    res.json({
+      user: {
+        userId: user.userId,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        channels: user.channels,
+      },
+      token,
     });
-
-    res.json({ user, token });
   } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ error: "Server error" });
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

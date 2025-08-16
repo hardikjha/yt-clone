@@ -4,6 +4,12 @@ import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+import videoRoutes from "./routes/videos.js";
+
+dotenv.config();
 
 const app = express();
 const PORT = 5000;
@@ -13,18 +19,20 @@ const SECRET = "your_jwt_secret";
 app.use(cors());
 app.use(bodyParser.json());
 
-// Temporary in-memory user storage
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
 
+// Temporary in-memory user storage
 const users = [];
 
 // Test route
-
 app.get("/", (req, res) => {
   res.send("Server running");
 });
 
 // Register route
-
 app.post("/register", async (req, res) => {
   const { username, email, password, avatar } = req.body;
 
@@ -64,7 +72,6 @@ app.post("/register", async (req, res) => {
 });
 
 // Login route
-
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = users.find(u => u.email === email);
@@ -92,5 +99,8 @@ app.post("/login", async (req, res) => {
   });
 });
 
+// Video routes
+app.use("/api/videos", videoRoutes);
+
 // Start server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -1,33 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import CategoryFilter from "./components/CategoryFilter";
 import VideoGrid from "./components/VideoGrid";
 import AuthPage from "./pages/AuthPage";
-import sampleVideos from "./data/sampleVideos";
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [category, setCategory] = useState("All");
+  const [videos, setVideos] = useState([]);
 
+  // Fetch videos from backend
+  useEffect(() => {
+    fetch("http://localhost:5000/api/videos")
+      .then((res) => res.json())
+      .then((data) => {
+        // Map backend fields to match VideoCard props
+        const mappedVideos = data.map((v) => ({
+          title: v.title,
+          uploader: v.uploader,
+          views: v.views,
+          thumbnailUrl: v.thumbnailUrl,
+        }));
+        setVideos(mappedVideos);
+      })
+      .catch((err) => console.error("Error fetching videos:", err));
+  }, []);
+
+  // Apply category filter
   const filteredVideos =
     category === "All"
-      ? sampleVideos
-      : sampleVideos.filter((v) =>
-          v.title.toLowerCase().includes(category.toLowerCase())
+      ? videos
+      : videos.filter((v) =>
+          v.title?.toLowerCase().includes(category.toLowerCase())
         );
 
   return (
     <Router>
-      {/* Header always present */}
       <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
       <Routes>
-        {/* Login/Register page */}
         <Route path="/auth" element={<AuthPage />} />
 
-        {/* Home page */}
         <Route
           path="/"
           element={
@@ -41,7 +56,7 @@ export default function App() {
               >
                 <CategoryFilter onCategoryChange={setCategory} />
                 <div className="p-4">
-                  <VideoGrid videos={filteredVideos} />
+                  <VideoGrid videos={filteredVideos || []} />
                 </div>
               </main>
             </div>

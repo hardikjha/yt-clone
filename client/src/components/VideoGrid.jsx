@@ -1,37 +1,24 @@
-import sampleVideos from "../data/sampleVideos";
+import VideoCard from "./VideoCard";
 
-export default function VideoGrid() {
+export default function VideoGrid({ videos = [] }) {
+  if (!Array.isArray(videos) || videos.length === 0) {
+    return <p className="text-center text-gray-500 mt-10">No videos found</p>;
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {sampleVideos.map((video) => (
-        <div
-          key={video.videoId}
-          className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition"
-        >
-          {/* Thumbnail with 16:9 ratio */}
-          <div className="relative aspect-video bg-gray-200">
-            <img
-              src={video.thumbnailUrl}
-              alt={video.title}
-              className="w-full h-full object-cover"
-            />
-            <span className="absolute bottom-1 right-1 bg-black bg-opacity-70 text-white text-xs px-1 rounded">
-              {video.duration}
-            </span>
-          </div>
+      {videos.map((video, i) => {
+        if (!video || typeof video !== "object") return null;
 
-          {/* Video details */}
-          <div className="p-2">
-            <h3 className="font-semibold text-sm line-clamp-2">
-              {video.title}
-            </h3>
-            <p className="text-xs text-gray-500">{video.uploader}</p>
-            <p className="text-xs text-gray-500">
-              {video.views} views • {new Date(video.uploadDate).toLocaleDateString()}
-            </p>
-          </div>
-        </div>
-      ))}
+        const videoProps = {
+          title: video.title || "Untitled Video",
+          uploader: video.uploader || video.channel || "Unknown",
+          views: video.views || 0,
+          thumbnailUrl: video.thumbnailUrl || video.thumbnail || "https://via.placeholder.com/300x180?text=No+Thumbnail",
+        };
+
+        return <VideoCard key={video.videoId || i} {...videoProps} />;
+      })}
     </div>
   );
 }

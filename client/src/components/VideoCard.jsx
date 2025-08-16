@@ -1,24 +1,22 @@
-export default function VideoCard({ title, channel, views, thumbnail, duration }) {
+export default function VideoCard({ title, uploader, views, thumbnailUrl }) {
   return (
-    <div className="w-full">
-      <div className="relative">
-        <img
-          src={thumbnail}
-          alt={title}
-          className="rounded-lg w-full aspect-video object-cover"
-          onError={(e) => {
-            e.target.src = "https://via.placeholder.com/300x180?text=No+Image";
-          }}
-        />
-        {/* Duration overlay */}
-        <span className="absolute bottom-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1.5 py-0.5 rounded">
-          {duration}
-        </span>
-      </div>
-      <div className="mt-2">
-        <h3 className="font-semibold text-sm line-clamp-2">{title}</h3>
-        <p className="text-gray-500 text-xs">{channel}</p>
-        <p className="text-gray-500 text-xs">{views} views</p>
+    <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+      <img
+        src={thumbnailUrl}
+        alt={title}
+        className="w-full h-48 object-cover"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "https://picsum.photos/300/180?random=1";
+        }}
+      />
+
+      <div className="p-3">
+        <h3 className="text-sm font-semibold line-clamp-2">{title || "Untitled Video"}</h3>
+        <p className="text-xs text-gray-500">{uploader || "Unknown Uploader"}</p>
+        <div className="flex justify-between text-xs text-gray-400 mt-1">
+          <span>{typeof views === "number" ? views.toLocaleString() : "0"} views</span>
+        </div>
       </div>
     </div>
   );

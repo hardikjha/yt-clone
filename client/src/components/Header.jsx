@@ -1,4 +1,4 @@
-import { Search, Mic } from "lucide-react";
+import { Menu, Search, Mic } from "lucide-react";
 import Tooltip from "./ui/Tooltip";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -17,20 +17,30 @@ export default function Header({ onToggleSidebar }) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow flex items-center justify-between px-4 py-2 h-[56px]">
-      {/* Left: Logo + YouTube text */}
-      <div
-        className="flex items-center gap-2 cursor-pointer"
-        onClick={() => navigate("/")}
-      >
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="w-8 h-8 object-contain"
-        />
-        <span className="text-2xl font-bold text-red-600 select-none">
-          YouTube
-        </span>
+      {/* Left: Hamburger + Logo / YouTube text */}
+      <div className="flex items-center gap-2">
+        {/* Hamburger only on homepage */}
+        {location.pathname === "/" && (
+          <button
+            onClick={onToggleSidebar}
+            className="p-2 rounded-full hover:bg-gray-100"
+          >
+            <Menu size={24} />
+          </button>
+        )}
+
+        {/* Logo / YouTube text */}
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
+          <span className="text-2xl font-bold text-red-600 select-none">
+            YouTube
+          </span>
+        </div>
       </div>
+
 
       {/* Middle: Search + Mic */}
       <div className="flex items-center flex-1 max-w-xl mx-6">

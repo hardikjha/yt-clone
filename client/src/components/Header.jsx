@@ -1,18 +1,35 @@
-import { Menu, Search, Mic } from "lucide-react";
+import { Search, Mic } from "lucide-react";
 import Tooltip from "./ui/Tooltip";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Header({ onToggleSidebar }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const defaultAvatar = "https://example.com/default-avatar.png";
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/auth");
+    window.location.reload();
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow flex items-center justify-between px-4 py-2 h-[56px]">
-      {/* Left: Hamburger + Logo */}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={onToggleSidebar}
-          className="p-2 rounded-full hover:bg-gray-100"
-        >
-          <Menu size={24} />
-        </button>
-        <h1 className="text-xl font-bold">YouTube</h1>
+      {/* Left: Logo + YouTube text */}
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => navigate("/")}
+      >
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className="w-8 h-8 object-contain"
+        />
+        <span className="text-2xl font-bold text-red-600 select-none">
+          YouTube
+        </span>
       </div>
 
       {/* Middle: Search + Mic */}
@@ -34,11 +51,31 @@ export default function Header({ onToggleSidebar }) {
         </Tooltip>
       </div>
 
-      {/* Right: Sign In button */}
+      {/* Right: Sign In button or user info */}
       <div className="flex items-center gap-4">
-        <button className="px-4 py-1 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-50">
-          Sign in
-        </button>
+        {user ? (
+          <div className="flex items-center gap-2">
+            <img
+              src={user.avatar || defaultAvatar}
+              alt="avatar"
+              className="w-8 h-8 rounded-full"
+            />
+            <span className="font-medium">{user.username}</span>
+            <button
+              onClick={handleSignOut}
+              className="px-3 py-1 border border-red-500 text-red-500 rounded-full hover:bg-red-50 ml-2"
+            >
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <a
+            href="/auth"
+            className="px-4 py-1 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-50"
+          >
+            Sign in
+          </a>
+        )}
       </div>
     </header>
   );

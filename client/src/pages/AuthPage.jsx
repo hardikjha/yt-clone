@@ -14,9 +14,10 @@ export default function AuthPage() {
     e.preventDefault();
 
     try {
+      // Updated backend URLs
       const url = isLogin
-        ? "http://localhost:5000/login"
-        : "http://localhost:5000/register";
+        ? "http://localhost:5000/api/users/login"
+        : "http://localhost:5000/api/users/register";
 
       const body = isLogin
         ? { email, password }
@@ -31,7 +32,7 @@ export default function AuthPage() {
       // Redirect to home page
       navigate("/");
     } catch (err) {
-      alert(err.response?.data?.message || "Something went wrong");
+      alert(err.response?.data?.error || "Something went wrong");
     }
   };
 

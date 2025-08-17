@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 export default function CreateChannelPage() {
   const [channelName, setChannelName] = useState("");
   const [description, setDescription] = useState("");
@@ -26,7 +27,7 @@ export default function CreateChannelPage() {
       });
 
       alert(`Channel "${data.channel.name}" created successfully!`);
-      navigate("/"); // redirect after creation
+      navigate(`/channel/${data.channel.channelId}`); // redirect to new channel
     } catch (err) {
       console.error(err);
       alert("Error creating channel");
@@ -36,30 +37,35 @@ export default function CreateChannelPage() {
   if (!user) return null; // prevent rendering form before redirect
 
   return (
-    <div className="mt-20 max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Create a Channel</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Channel Name"
-          value={channelName}
-          onChange={(e) => setChannelName(e.target.value)}
-          required
-          className="border p-2 rounded"
-        />
-        <textarea
-          placeholder="Channel Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Create Channel
-        </button>
-      </form>
+    <div className="flex flex-col min-h-screen">
+      {/* Main content */}
+      <main className="flex-1 max-w-2xl mx-auto p-4 mt-20">
+        <h1 className="text-2xl font-bold mb-4">Create a Channel</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Channel Name"
+            value={channelName}
+            onChange={(e) => setChannelName(e.target.value)}
+            required
+            className="border p-2 rounded"
+          />
+          <textarea
+            placeholder="Channel Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="border p-2 rounded"
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Create Channel
+          </button>
+        </form>
+      </main>
+
+      
     </div>
   );
 }

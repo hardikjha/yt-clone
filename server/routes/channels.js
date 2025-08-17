@@ -23,16 +23,12 @@ router.post("/create", async (req, res) => {
 
     await newChannel.save();
 
-    // Update the user's channels array (store full channel object)
+    // Update the user's channels array (store only channelId string)
     const user = await User.findOne({ userId });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     user.channels = user.channels || [];
-    user.channels.push({
-      channelId: newChannel.channelId,
-      name: newChannel.name,
-      description: newChannel.description,
-    });
+    user.channels.push(newChannel.channelId); // ✅ only push channelId string
     await user.save();
 
     res.status(201).json({ message: "Channel created", channel: newChannel });

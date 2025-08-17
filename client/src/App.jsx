@@ -9,6 +9,7 @@ import VideoPage from "./pages/VideoPage";
 import SearchPage from "./pages/SearchPage";
 import CreateChannelPage from "./pages/CreateChannelPage"; 
 import ChannelPage from "./pages/ChannelPage";
+import Footer from "./components/Footer";
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -43,7 +44,9 @@ export default function App() {
         );
 
   return (
+    
     <Router>
+      <div className="flex flex-col min-h-screen">
       <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
       <Routes>
@@ -75,6 +78,9 @@ export default function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/create-channel" element={<CreateChannelPage />} />
       </Routes>
+      <Footer/>
+     </div> 
     </Router>
+   
   );
 }

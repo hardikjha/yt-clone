@@ -1,24 +1,24 @@
 import mongoose from "mongoose";
 
-const commentSchema = new mongoose.Schema({
-  commentId: { type: String, required: true },
-  userId: { type: String, required: true },
-  text: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now }
+const CommentSchema = new mongoose.Schema({
+  commentId: String,
+  userId: String,
+  text: String,
+  timestamp: Date,
 });
 
-const videoSchema = new mongoose.Schema({
-  videoId: { type: String, required: true, unique: true },
-  title: { type: String, required: true },
-  thumbnailUrl: { type: String, required: true },
-  description: { type: String, required: true },
-  channelId: { type: String, required: true },
-  uploader: { type: String, required: true },
-  views: { type: Number, default: 0 },
-  likes: { type: Number, default: 0 },
-  dislikes: { type: Number, default: 0 },
-  uploadDate: { type: Date, default: Date.now },
-  comments: [commentSchema]
+const VideoSchema = new mongoose.Schema({
+  videoId: String,
+  title: String,
+  thumbnailUrl: String,
+  description: String,
+  channelId: String,
+  uploader: String,
+  views: Number,
+  likes: Number,
+  dislikes: Number,
+  uploadDate: Date,
+  comments: [CommentSchema],
 });
 
-export default mongoose.model("Video", videoSchema);
+export default mongoose.model("Video", VideoSchema);

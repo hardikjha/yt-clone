@@ -10,7 +10,9 @@ export default function VideoGrid({ videos = [] }) {
       {videos.map((video, i) => {
         if (!video || typeof video !== "object") return null;
 
+        // Pass videoId as well so VideoCard Link works
         const videoProps = {
+          videoId: video.videoId,
           title: video.title || "Untitled Video",
           uploader: video.uploader || video.channel || "Unknown",
           views: video.views || 0,

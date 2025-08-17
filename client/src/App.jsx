@@ -5,30 +5,33 @@ import Sidebar from "./components/Sidebar";
 import CategoryFilter from "./components/CategoryFilter";
 import VideoGrid from "./components/VideoGrid";
 import AuthPage from "./pages/AuthPage";
+import VideoPage from "./pages/VideoPage";
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [category, setCategory] = useState("All");
   const [videos, setVideos] = useState([]);
 
-  // Fetch videos from backend
   useEffect(() => {
     fetch("http://localhost:5000/api/videos")
       .then((res) => res.json())
       .then((data) => {
-        // Map backend fields to match VideoCard props
-        const mappedVideos = data.map((v) => ({
-          title: v.title,
-          uploader: v.uploader,
-          views: v.views,
-          thumbnailUrl: v.thumbnailUrl,
+        if (!Array.isArray(data)) return;
+        const mappedVideos = data.map((v, i) => ({
+          videoId: v.videoId || v._id || `video${i + 1}`,
+          title: v.title || "Untitled Video",
+          uploader: v.uploader || "Unknown",
+          views: typeof v.views === "number" ? v.views : 0,
+          thumbnailUrl:
+            v.thumbnailUrl ||
+            v.thumbnail ||
+            `https://picsum.photos/seed/video${i + 1}/300/180`,
         }));
         setVideos(mappedVideos);
       })
       .catch((err) => console.error("Error fetching videos:", err));
   }, []);
 
-  // Apply category filter
   const filteredVideos =
     category === "All"
       ? videos
@@ -48,7 +51,6 @@ export default function App() {
           element={
             <div className="flex mt-14 min-h-[calc(100vh-56px)]">
               <Sidebar isOpen={sidebarOpen} />
-
               <main
                 className={`flex-1 transition-all duration-300 ${
                   sidebarOpen ? "ml-60" : "ml-0"
@@ -56,12 +58,14 @@ export default function App() {
               >
                 <CategoryFilter onCategoryChange={setCategory} />
                 <div className="p-4">
-                  <VideoGrid videos={filteredVideos || []} />
+                  <VideoGrid videos={filteredVideos} />
                 </div>
               </main>
             </div>
           }
         />
+
+        <Route path="/video/:videoId" element={<VideoPage />} />
       </Routes>
     </Router>
   );

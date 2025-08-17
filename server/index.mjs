@@ -23,13 +23,13 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("✅ MongoDB connected to youtube_clone database"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log(" MongoDB connected to youtube_clone database"))
+  .catch((err) => console.error(" MongoDB connection error:", err));
 
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/videos", videoRoutes);
-app.use("/api/channels", channelsRouter); // ✅ moved here
+app.use("/api/channels", channelsRouter); 
 
 // Test route
 app.get("/", (req, res) => {
@@ -37,4 +37,4 @@ app.get("/", (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

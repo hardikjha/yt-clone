@@ -10,6 +10,7 @@ comments, and view suggested videos.
 
 ## 🚀 Features
 
+
 ###  Video Player
 
 -   Responsive video player with autoplay and full controls\
@@ -66,7 +67,7 @@ comments, and view suggested videos.
 ### 1️⃣ Clone the repository
 
 ``` bash
-git clone https://github.com/hardikjha/youtube-clone.git
+git clone https://github.com/hardikjha/yt-clone.git
 cd youtube-clone
 ```
 
@@ -143,4 +144,7 @@ Visit  `http://localhost:5173`
 -   `PUT /api/videos/:id/comments/:commentId` → Edit comment\
 -   `DELETE /api/videos/:id/comments/:commentId` → Delete comment
 
+## Demo video has been added
 
+
+[Repository link](https://github.com/hardikjha/yt-clone)

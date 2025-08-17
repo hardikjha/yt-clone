@@ -1,6 +1,7 @@
 import { Menu, Search, Mic } from "lucide-react";
 import Tooltip from "./ui/Tooltip";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 import LogoImg from "../img/logo.png";
 
 export default function Header({ onToggleSidebar }) {
@@ -8,6 +9,7 @@ export default function Header({ onToggleSidebar }) {
   const defaultAvatar = "https://example.com/default-avatar.png";
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
@@ -16,11 +18,20 @@ export default function Header({ onToggleSidebar }) {
     window.location.reload();
   };
 
+  const handleSearch = () => {
+    if (!searchQuery.trim()) return;
+    // navigate to search page with query param
+    navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") handleSearch();
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow flex items-center justify-between px-4 py-2 h-[56px]">
       {/* Left: Hamburger + Logo / YouTube text */}
       <div className="flex items-center gap-2">
-        {/* Hamburger only on homepage */}
         {location.pathname === "/" && (
           <button
             onClick={onToggleSidebar}
@@ -29,8 +40,6 @@ export default function Header({ onToggleSidebar }) {
             <Menu size={24} />
           </button>
         )}
-
-        {/* Logo / YouTube text */}
         <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
@@ -42,16 +51,21 @@ export default function Header({ onToggleSidebar }) {
         </div>
       </div>
 
-
       {/* Middle: Search + Mic */}
       <div className="flex items-center flex-1 max-w-xl mx-6">
         <div className="flex flex-1 border rounded-full overflow-hidden">
           <input
             type="text"
             placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyPress}
             className="flex-1 px-4 py-2 outline-none"
           />
-          <button className="bg-gray-100 px-4 flex items-center justify-center">
+          <button
+            onClick={handleSearch}
+            className="bg-gray-100 px-4 flex items-center justify-center"
+          >
             <Search size={20} />
           </button>
         </div>

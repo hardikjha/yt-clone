@@ -6,6 +6,7 @@ import CategoryFilter from "./components/CategoryFilter";
 import VideoGrid from "./components/VideoGrid";
 import AuthPage from "./pages/AuthPage";
 import VideoPage from "./pages/VideoPage";
+import SearchPage from "./pages/SearchPage"; // import search page
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -66,6 +67,7 @@ export default function App() {
         />
 
         <Route path="/video/:videoId" element={<VideoPage />} />
+        <Route path="/search" element={<SearchPage />} /> {/* new search route */}
       </Routes>
     </Router>
   );

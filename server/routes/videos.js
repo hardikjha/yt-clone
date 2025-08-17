@@ -14,6 +14,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+// 🔍 Search videos by title
+router.get("/search", async (req, res) => {
+  try {
+    const { query } = req.query; // get ?query= from URL
+    if (!query) return res.json([]);
+
+    const videos = await Video.find({
+      title: { $regex: query, $options: "i" }, // case-insensitive search
+    });
+
+    res.json(videos);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Get single video by videoId
 router.get("/:videoId", async (req, res) => {
   try {

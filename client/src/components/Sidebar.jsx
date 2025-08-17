@@ -10,34 +10,41 @@ import {
   Gamepad2,
   Newspaper,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar({ isOpen }) {
+  const navigate = useNavigate();
+
   const sections = [
     {
       title: null,
       items: [
-        { label: "Home", icon: <Home size={20} /> },
-        { label: "Explore", icon: <Compass size={20} /> },
-        { label: "Subscriptions", icon: <ListVideo size={20} /> },
+        { label: "Home", icon: <Home size={20} />, path: "/" },
+        { label: "Explore", icon: <Compass size={20} />, path: "/explore" },
+        { label: "Subscriptions", icon: <ListVideo size={20} />, path: "/subscriptions" },
       ],
     },
     {
       title: "Library",
       items: [
-        { label: "History", icon: <History size={20} /> },
-        { label: "Watch Later", icon: <Clock size={20} /> },
-        { label: "Liked Videos", icon: <ThumbsUp size={20} /> },
+        { label: "History", icon: <History size={20} />, path: "/history" },
+        { label: "Watch Later", icon: <Clock size={20} />, path: "/watch-later" },
+        { label: "Liked Videos", icon: <ThumbsUp size={20} />, path: "/liked" },
       ],
     },
     {
       title: "Explore More",
       items: [
-        { label: "Music", icon: <Music size={20} /> },
-        { label: "Gaming", icon: <Gamepad2 size={20} /> },
-        { label: "News", icon: <Newspaper size={20} /> },
+        { label: "Music", icon: <Music size={20} />, path: "/music" },
+        { label: "Gaming", icon: <Gamepad2 size={20} />, path: "/gaming" },
+        { label: "News", icon: <Newspaper size={20} />, path: "/news" },
       ],
     },
   ];
+
+  const handleItemClick = (path) => {
+    if (path) navigate(path);
+  };
 
   return (
     <aside
@@ -57,6 +64,7 @@ export default function Sidebar({ isOpen }) {
               {section.items.map((item, i) => (
                 <li
                   key={i}
+                  onClick={() => handleItemClick(item.path)}
                   className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 cursor-pointer text-sm font-medium"
                 >
                   {item.icon}

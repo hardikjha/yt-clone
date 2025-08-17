@@ -39,6 +39,7 @@ export default function SearchPage() {
   }, [searchQuery]);
 
   return (
+   <div className="flex flex-col min-h-screen">
     <VideoLayout>
       <div className="max-w-6xl mx-auto px-4 py-6">
         <h1 className="text-2xl font-bold mb-4">
@@ -65,5 +66,6 @@ export default function SearchPage() {
         )}
       </div>
     </VideoLayout>
+   </div>  
   );
 }

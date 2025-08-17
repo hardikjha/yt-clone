@@ -14,7 +14,7 @@ export default function VideoCard({ videoId, title, uploader, views, thumbnailUr
           }}
         />
 
-        <div className="p-3">
+        <div className="p-3 mr-2">
           <h3 className="text-sm font-semibold line-clamp-2">{title || "Untitled Video"}</h3>
           <p className="text-xs text-gray-500">{uploader || "Unknown Uploader"}</p>
           <div className="flex justify-between text-xs text-gray-400 mt-1">

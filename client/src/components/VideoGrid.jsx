@@ -6,17 +6,33 @@ export default function VideoGrid({ videos = [] }) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div
+      className="
+        grid 
+        grid-cols-1 
+        xs:grid-cols-1
+        sm:grid-cols-1
+        md:grid-cols-3 
+        lg:grid-cols-4 
+        xl:grid-cols-4
+        gap-4 
+        px-2 sm:px-4
+        w-full max-w-100vw
+        overflow-hidden
+      "
+    >
       {videos.map((video, i) => {
         if (!video || typeof video !== "object") return null;
 
-        // Pass videoId as well so VideoCard Link works
         const videoProps = {
           videoId: video.videoId,
           title: video.title || "Untitled Video",
           uploader: video.uploader || video.channel || "Unknown",
           views: video.views || 0,
-          thumbnailUrl: video.thumbnailUrl || video.thumbnail || "https://via.placeholder.com/300x180?text=No+Thumbnail",
+          thumbnailUrl:
+            video.thumbnailUrl ||
+            video.thumbnail ||
+            "https://via.placeholder.com/300x180?text=No+Thumbnail",
         };
 
         return <VideoCard key={video.videoId || i} {...videoProps} />;

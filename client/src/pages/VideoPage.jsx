@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import VideoCard from "../components/VideoCard";
-import VideoLayout from "../components/VideoLayout"; 
+import VideoLayout from "../components/VideoLayout";
 
 export default function VideoPage() {
   const { videoId } = useParams();
@@ -13,9 +13,9 @@ export default function VideoPage() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingText, setEditingText] = useState("");
-  const [userReaction, setUserReaction] = useState(null); // "like", "dislike", or null
+  const [userReaction, setUserReaction] = useState(null);
 
-  // Fetch video and suggested videos
+  // Fetch video
   useEffect(() => {
     const fetchVideo = async () => {
       try {
@@ -36,6 +36,7 @@ export default function VideoPage() {
     fetchVideo();
   }, [videoId, user]);
 
+  // Fetch suggested videos
   useEffect(() => {
     const fetchSuggested = async () => {
       try {
@@ -48,7 +49,7 @@ export default function VideoPage() {
     fetchSuggested();
   }, [videoId]);
 
-  // Like / Dislike handlers
+  // Like handlers
   const handleLike = async () => {
     if (!user) return alert("Please login to like the video");
     try {
@@ -56,7 +57,7 @@ export default function VideoPage() {
         `http://localhost:5000/api/videos/${videoId}/like`,
         { userId: user.userId }
       );
-      setVideo(data); // full updated video from backend
+      setVideo(data);
       setUserReaction(data.likedBy.includes(user.userId) ? "like" : null);
     } catch (err) {
       console.error(err);
@@ -70,14 +71,14 @@ export default function VideoPage() {
         `http://localhost:5000/api/videos/${videoId}/dislike`,
         { userId: user.userId }
       );
-      setVideo(data); // full updated video from backend
+      setVideo(data);
       setUserReaction(data.dislikedBy.includes(user.userId) ? "dislike" : null);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Comment handlers
+  // Comments
   const handleAddComment = async () => {
     if (!user) return alert("Please login to comment");
     if (!commentText.trim()) return;
@@ -102,7 +103,9 @@ export default function VideoPage() {
       );
       setVideo((prev) => ({
         ...prev,
-        comments: prev.comments.map((c) => (c.commentId === commentId ? data : c)),
+        comments: prev.comments.map((c) =>
+          c.commentId === commentId ? data : c
+        ),
       }));
       setEditingCommentId(null);
       setEditingText("");
@@ -129,14 +132,15 @@ export default function VideoPage() {
 
   return (
     <VideoLayout>
-      <div className="max-w-6xl mx-auto flex gap-8">
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
         {/* Left column */}
-        <div className="w-3/4 text-left">
+        <div className="flex-1 text-left">
           <div className="w-full bg-black mb-4">
             <video
-              src={video.videoUrl || video.thumbnailUrl}
+              src="/dummy-video.mp4"
               controls
-              className="w-full h-96 object-cover rounded"
+              autoPlay
+              className="w-full h-60 sm:h-80 lg:h-96 object-contain rounded"
             />
           </div>
 
@@ -148,14 +152,22 @@ export default function VideoPage() {
             <button
               onClick={handleLike}
               className={`flex items-center gap-1 px-3 py-1 rounded 
-                ${userReaction === "like" ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300"}`}
+                ${
+                  userReaction === "like"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
             >
               <ThumbsUp size={18} /> {video.likes}
             </button>
             <button
               onClick={handleDislike}
               className={`flex items-center gap-1 px-3 py-1 rounded 
-                ${userReaction === "dislike" ? "bg-red-600 text-white" : "bg-gray-200 hover:bg-gray-300"}`}
+                ${
+                  userReaction === "dislike"
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
             >
               <ThumbsDown size={18} /> {video.dislikes}
             </button>
@@ -186,7 +198,10 @@ export default function VideoPage() {
             )}
 
             {video.comments.map((c) => (
-              <div key={c.commentId} className="mb-2 border-b pb-2 flex flex-col">
+              <div
+                key={c.commentId}
+                className="mb-2 border-b pb-2 flex flex-col"
+              >
                 {editingCommentId === c.commentId ? (
                   <div className="flex gap-2 mb-2">
                     <input
@@ -238,10 +253,27 @@ export default function VideoPage() {
               </div>
             ))}
           </div>
+
+          {/* Suggestions below comments on small screens */}
+          <div className="lg:hidden mt-8">
+            <h2 className="text-lg font-semibold mb-4">Suggested Videos</h2>
+            <div className="flex flex-col gap-4">
+              {suggestedVideos.map((vid) => (
+                <VideoCard
+                  key={vid.videoId}
+                  videoId={vid.videoId}
+                  title={vid.title}
+                  uploader={vid.uploader}
+                  views={vid.views}
+                  thumbnailUrl={vid.thumbnailUrl}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Right column: suggested videos */}
-        <div className="w-1/4">
+        {/* Right column for large screens */}
+        <div className="hidden lg:block w-1/4">
           <h2 className="text-lg font-semibold mb-4">Up Next</h2>
           <div className="flex flex-col gap-4">
             {suggestedVideos.map((vid) => (

@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 import videoRoutes from "./routes/videos.js";
 import userRoutes from "./routes/users.js";
+import channelsRouter from "./routes/channels.js";
 
 dotenv.config();
 
@@ -22,19 +23,13 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
-    console.log("✅ MongoDB connected to youtube_clone database");
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB connection error:", err);
-  });
+  .then(() => console.log("✅ MongoDB connected to youtube_clone database"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Routes
-// All auth/user routes handled via users.js which writes to MongoDB
 app.use("/api/users", userRoutes);
-
-// Video routes
 app.use("/api/videos", videoRoutes);
+app.use("/api/channels", channelsRouter); // ✅ moved here
 
 // Test route
 app.get("/", (req, res) => {

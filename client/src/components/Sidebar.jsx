@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   Compass,
@@ -9,11 +10,12 @@ import {
   Music,
   Gamepad2,
   Newspaper,
+  PlusCircle,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function Sidebar({ isOpen }) {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const sections = [
     {
@@ -42,10 +44,6 @@ export default function Sidebar({ isOpen }) {
     },
   ];
 
-  const handleItemClick = (path) => {
-    if (path) navigate(path);
-  };
-
   return (
     <aside
       className={`fixed top-14 left-0 h-full bg-white shadow-lg border-r
@@ -64,7 +62,7 @@ export default function Sidebar({ isOpen }) {
               {section.items.map((item, i) => (
                 <li
                   key={i}
-                  onClick={() => handleItemClick(item.path)}
+                  onClick={() => item.path && navigate(item.path)}
                   className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 cursor-pointer text-sm font-medium"
                 >
                   {item.icon}
@@ -74,6 +72,19 @@ export default function Sidebar({ isOpen }) {
             </ul>
           </div>
         ))}
+
+        {/* Create Channel button (only for logged in users) */}
+        {user && (
+          <div className="mt-4">
+            <button
+              onClick={() => navigate("/create-channel")}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 w-full text-sm font-medium"
+            >
+              <PlusCircle size={20} />
+              <span>Create Channel</span>
+            </button>
+          </div>
+        )}
       </div>
     </aside>
   );

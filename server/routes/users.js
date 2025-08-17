@@ -2,6 +2,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Channel from "../models/Channel.js";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
@@ -72,6 +73,30 @@ router.post("/login", async (req, res) => {
         channels: user.channels,
       },
       token,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// NEW: GET user by userId with populated channels
+router.get("/:userId", async (req, res) => {
+  try {
+    const user = await User.findOne({ userId: req.params.userId });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Populate full channel objects from channels collection
+    const channels = await Channel.find({ channelId: { $in: user.channels } });
+
+    res.json({
+      user: {
+        userId: user.userId,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        channels, // array of full channel objects
+      },
     });
   } catch (err) {
     console.error(err);

@@ -1,21 +1,36 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Home,
   Compass,
-  PlaySquare,
+  ListVideo,
+  History,
   Clock,
   ThumbsUp,
-  History,
-  ListVideo,
   Music,
   Gamepad2,
   Newspaper,
   PlusCircle,
+  Tv,
 } from "lucide-react";
+import axios from "axios";
 
 export default function Sidebar({ isOpen }) {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("user"));
+    if (!localUser) return;
+    // Fetch full user data with channels
+    axios
+      .get(`http://localhost:5000/api/users/${localUser.userId}`)
+      .then((res) => {
+        setUser(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user)); // update localStorage
+      })
+      .catch(console.error);
+  }, []);
 
   const sections = [
     {
@@ -26,22 +41,7 @@ export default function Sidebar({ isOpen }) {
         { label: "Subscriptions", icon: <ListVideo size={20} />, path: "/subscriptions" },
       ],
     },
-    {
-      title: "Library",
-      items: [
-        { label: "History", icon: <History size={20} />, path: "/history" },
-        { label: "Watch Later", icon: <Clock size={20} />, path: "/watch-later" },
-        { label: "Liked Videos", icon: <ThumbsUp size={20} />, path: "/liked" },
-      ],
-    },
-    {
-      title: "Explore More",
-      items: [
-        { label: "Music", icon: <Music size={20} />, path: "/music" },
-        { label: "Gaming", icon: <Gamepad2 size={20} />, path: "/gaming" },
-        { label: "News", icon: <Newspaper size={20} />, path: "/news" },
-      ],
-    },
+    // ... other sections
   ];
 
   return (
@@ -73,8 +73,18 @@ export default function Sidebar({ isOpen }) {
           </div>
         ))}
 
-        {/* Create Channel button (only for logged in users) */}
-        {user && (
+        {/* Channel buttons */}
+        {user && user.channels?.length > 0 ? (
+          <div className="mt-4">
+            <button
+              onClick={() => navigate(`/channel/${user.channels[0].channelId}`)}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 w-full text-sm font-medium"
+            >
+              <Tv size={20} />
+              <span>My Channel</span>
+            </button>
+          </div>
+        ) : user ? (
           <div className="mt-4">
             <button
               onClick={() => navigate("/create-channel")}
@@ -84,7 +94,7 @@ export default function Sidebar({ isOpen }) {
               <span>Create Channel</span>
             </button>
           </div>
-        )}
+        ) : null}
       </div>
     </aside>
   );

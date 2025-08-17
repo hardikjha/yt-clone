@@ -7,7 +7,8 @@ import VideoGrid from "./components/VideoGrid";
 import AuthPage from "./pages/AuthPage";
 import VideoPage from "./pages/VideoPage";
 import SearchPage from "./pages/SearchPage";
-import CreateChannelPage from "./pages/CreateChannelPage"; // new import
+import CreateChannelPage from "./pages/CreateChannelPage"; 
+import ChannelPage from "./pages/ChannelPage";
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -47,6 +48,7 @@ export default function App() {
 
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/mychannel" element={<ChannelPage />} />
 
         <Route
           path="/"

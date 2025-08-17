@@ -48,7 +48,9 @@ export default function App() {
 
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/mychannel" element={<ChannelPage />} />
+        
+        {/* Dynamic channel page route */}
+        <Route path="/channel/:channelId" element={<ChannelPage />} />
 
         <Route
           path="/"
@@ -70,8 +72,8 @@ export default function App() {
         />
 
         <Route path="/video/:videoId" element={<VideoPage />} />
-        <Route path="/search" element={<SearchPage />} /> {/* search route */}
-        <Route path="/create-channel" element={<CreateChannelPage />} /> {/* create channel */}
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/create-channel" element={<CreateChannelPage />} />
       </Routes>
     </Router>
   );

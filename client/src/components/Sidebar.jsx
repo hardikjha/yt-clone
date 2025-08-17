@@ -12,6 +12,8 @@ import {
   Newspaper,
   PlusCircle,
   Tv,
+  Tv2,
+  TrendingUp,
 } from "lucide-react";
 import axios from "axios";
 
@@ -41,7 +43,23 @@ export default function Sidebar({ isOpen }) {
         { label: "Subscriptions", icon: <ListVideo size={20} />, path: "/subscriptions" },
       ],
     },
-    // ... other sections
+    {
+      title: "Library",
+      items: [
+        { label: "History", icon: <History size={20} />, path: "/history" },
+        { label: "Watch Later", icon: <Clock size={20} />, path: "/watch-later" },
+        { label: "Liked Videos", icon: <ThumbsUp size={20} />, path: "/liked" },
+      ],
+    },
+    {
+      title: "Trending & More",
+      items: [
+        { label: "Trending", icon: <TrendingUp size={20} />, path: "/trending" },
+        { label: "Music", icon: <Music size={20} />, path: "/music" },
+        { label: "Gaming", icon: <Gamepad2 size={20} />, path: "/gaming" },
+        { label: "News", icon: <Newspaper size={20} />, path: "/news" },
+      ],
+    },
   ];
 
   return (
@@ -74,27 +92,27 @@ export default function Sidebar({ isOpen }) {
         ))}
 
         {/* Channel buttons */}
-        {user && user.channels?.length > 0 ? (
+        {user && (
           <div className="mt-4">
-            <button
-              onClick={() => navigate(`/channel/${user.channels[0].channelId}`)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 w-full text-sm font-medium"
-            >
-              <Tv size={20} />
-              <span>My Channel</span>
-            </button>
+            {user.channels?.length > 0 ? (
+              <button
+                onClick={() => navigate(`/channel/${user.channels[0].channelId}`)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 w-full text-sm font-medium"
+              >
+                <Tv size={20} />
+                <span>My Channel</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/create-channel")}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 w-full text-sm font-medium"
+              >
+                <PlusCircle size={20} />
+                <span>Create Channel</span>
+              </button>
+            )}
           </div>
-        ) : user ? (
-          <div className="mt-4">
-            <button
-              onClick={() => navigate("/create-channel")}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 w-full text-sm font-medium"
-            >
-              <PlusCircle size={20} />
-              <span>Create Channel</span>
-            </button>
-          </div>
-        ) : null}
+        )}
       </div>
     </aside>
   );

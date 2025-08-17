@@ -23,15 +23,45 @@ router.post("/create", async (req, res) => {
 
     await newChannel.save();
 
-    // Update the user's channels array
+    // Update the user's channels array (store full channel object)
     const user = await User.findOne({ userId });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     user.channels = user.channels || [];
-    user.channels.push(newChannel.channelId);
+    user.channels.push({
+      channelId: newChannel.channelId,
+      name: newChannel.name,
+      description: newChannel.description,
+    });
     await user.save();
 
     res.status(201).json({ message: "Channel created", channel: newChannel });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get channel by channelId
+router.get("/:channelId", async (req, res) => {
+  try {
+    const { channelId } = req.params;
+    const channel = await Channel.findOne({ channelId });
+    if (!channel) return res.status(404).json({ message: "Channel not found" });
+    res.json(channel);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get my channel by ownerId
+router.get("/mychannel/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const channel = await Channel.findOne({ ownerId: userId });
+    if (!channel) return res.status(404).json({ message: "Channel not found" });
+    res.json(channel);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });

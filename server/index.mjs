@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 // MongoDB connection
 mongoose
-  .connect("mongodb://127.0.0.1:27017/youtube_clone", {
+  .connect(process.env.MONGO_URI , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

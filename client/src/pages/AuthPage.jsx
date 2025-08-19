@@ -80,7 +80,7 @@ export default function AuthPage() {
         />
         <button
           type="submit"
-          className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="p-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg"
         >
           {isLogin ? "Login" : "Register"}
         </button>

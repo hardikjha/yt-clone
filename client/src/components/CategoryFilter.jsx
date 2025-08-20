@@ -20,7 +20,7 @@ export default function CategoryFilter({ onCategoryChange }) {
 
   const handleClick = (cat) => {
     setActive(cat);
-    onCategoryChange(cat);
+    onCategoryChange?.(cat);
   };
 
   return (

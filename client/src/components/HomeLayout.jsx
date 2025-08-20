@@ -11,7 +11,7 @@ export default function HomeLayout({ children }) {
       <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
       <div className="flex flex-1 mt-14">
-        <Sidebar isOpen={sidebarOpen} />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         <main
           className={`flex-1 transition-all duration-300 ${
@@ -19,7 +19,7 @@ export default function HomeLayout({ children }) {
           }`}
         >
           <CategoryFilter />
-          <div className="p-4">{children}</div>
+          <div className="w-full">{children}</div>
         </main>
       </div>
     </div>

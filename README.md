@@ -60,6 +60,10 @@ comments, and view suggested videos.
 -   MongoDB with Mongoose\
 -   REST API endpoints for videos, likes, dislikes, comments
 
+### In-App Preview
+![Homescreen](client/public/ytc.PNG)
+![Responsive Design](client/public/ytmult.jpg)
+
 ------------------------------------------------------------------------
 
 ## ⚙️ Installation & Setup

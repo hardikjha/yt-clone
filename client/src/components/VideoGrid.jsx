@@ -32,7 +32,7 @@ export default function VideoGrid({ videos = [] }) {
               video.thumbnailUrl ||
               video.thumbnail ||
               "https://via.placeholder.com/300x180?text=No+Thumbnail",
-            duration: video.duration || null, // <-- pass duration here
+            duration: video.duration || null, 
           };
 
           return <VideoCard key={video.videoId || i} {...videoProps} />;

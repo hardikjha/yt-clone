@@ -16,11 +16,22 @@ export default function App() {
   const [category, setCategory] = useState("All");
   const [videos, setVideos] = useState([]);
 
+  // Function to generate random video duration
+  const randomDuration = (minMinutes = 1, maxMinutes = 20) => {
+    const totalSeconds =
+      Math.floor(Math.random() * (maxMinutes * 60 - minMinutes * 60 + 1)) +
+      minMinutes * 60;
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   useEffect(() => {
     fetch("http://localhost:5000/api/videos")
       .then((res) => res.json())
       .then((data) => {
         if (!Array.isArray(data)) return;
+
         const mappedVideos = data.map((v, i) => ({
           videoId: v.videoId || v._id || `video${i + 1}`,
           title: v.title || "Untitled Video",
@@ -30,7 +41,9 @@ export default function App() {
             v.thumbnailUrl ||
             v.thumbnail ||
             `https://picsum.photos/seed/video${i + 1}/300/180`,
+          duration: randomDuration(), // <-- add random duration
         }));
+
         setVideos(mappedVideos);
       })
       .catch((err) => console.error("Error fetching videos:", err));

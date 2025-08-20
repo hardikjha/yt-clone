@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function VideoCard({ videoId, title, uploader, views, thumbnailUrl }) {
+export default function VideoCard({ videoId, title, uploader, views, thumbnailUrl, duration }) {
   return (
     <Link to={`/video/${videoId}`} className="block">
       <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
@@ -15,6 +15,12 @@ export default function VideoCard({ videoId, title, uploader, views, thumbnailUr
               e.target.src = "https://picsum.photos/300/180?random=1";
             }}
           />
+          {/* Duration badge */}
+          {duration && (
+            <span className="absolute bottom-2 right-2 bg-black text-white text-xs px-1.5 py-0.5 rounded-sm opacity-90">
+              {duration}
+            </span>
+          )}
         </div>
 
         <div className="p-3">

@@ -58,7 +58,7 @@ export default function ChannelPage() {
         {/* Avatar + channel name */}
         <div className="absolute left-8 bottom-[-40px] flex items-center gap-4">
           <img
-            src={user.avatar || "https://via.placeholder.com/80"}
+            src={user.avatar || "https://ui-avatars.com/api/?name=User&background=random"}
             alt="channel avatar"
             className="w-24 h-24 rounded-full border-4 border-white object-cover"
           />

@@ -44,43 +44,40 @@ export default function App() {
         );
 
   return (
-    
     <Router>
       <div className="flex flex-col min-h-screen">
-      <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
-      <Routes>
-        <Route path="/auth" element={<AuthPage />} />
-        
-        {/* Dynamic channel page route */}
-        <Route path="/channel/:channelId" element={<ChannelPage />} />
+        <Routes>
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/channel/:channelId" element={<ChannelPage />} />
+          <Route
+            path="/"
+            element={
+              <div className="flex mt-14 min-h-[calc(100vh-56px)]">
+                <Sidebar isOpen={sidebarOpen} />
+                <main
+                  className={`flex-1 transition-all duration-300 overflow-hidden ${
+                    sidebarOpen ? "ml-60" : "ml-0"
+                  }`}
+                >
+                  {/* Horizontally scrollable CategoryFilter */}
+                  <CategoryFilter onCategoryChange={setCategory} />
 
-        <Route
-          path="/"
-          element={
-            <div className="flex mt-14 min-h-[calc(100vh-56px)]">
-              <Sidebar isOpen={sidebarOpen} />
-              <main
-                className={`flex-1 transition-all duration-300 ${
-                  sidebarOpen ? "ml-60" : "ml-0"
-                }`}
-              >
-                <CategoryFilter onCategoryChange={setCategory} />
-                <div className="p-4">
-                  <VideoGrid videos={filteredVideos} />
-                </div>
-              </main>
-            </div>
-          }
-        />
+                  <div className="p-4">
+                    <VideoGrid videos={filteredVideos} />
+                  </div>
+                </main>
+              </div>
+            }
+          />
+          <Route path="/video/:videoId" element={<VideoPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/create-channel" element={<CreateChannelPage />} />
+        </Routes>
 
-        <Route path="/video/:videoId" element={<VideoPage />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/create-channel" element={<CreateChannelPage />} />
-      </Routes>
-      <Footer/>
-     </div> 
+        <Footer />
+      </div>
     </Router>
-   
   );
 }

@@ -20,17 +20,17 @@ export default function CategoryFilter({ onCategoryChange }) {
 
   const handleClick = (cat) => {
     setActive(cat);
-    onCategoryChange?.(cat);
+    onCategoryChange(cat);
   };
 
   return (
-    <div className="w-full bg-white sticky top-14 z-40 border-b">
-      <div className="flex overflow-x-auto no-scrollbar gap-3 px-4 py-2">
+    <div className="w-full border-b bg-white sticky top-4 z-40 overflow-x-auto">
+      <div className="inline-flex gap-3 px-4 py-2 min-w-max">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => handleClick(cat)}
-            className={`px-4 py-1 rounded-full text-sm whitespace-nowrap transition
+            className={`flex-shrink-0 px-4 py-1 rounded-full text-sm whitespace-nowrap transition
               ${
                 active === cat
                   ? "bg-black text-white"

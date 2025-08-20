@@ -1,25 +1,22 @@
-import { useState } from "react";
-import Header from "./Header";
 import Sidebar from "./Sidebar";
-import CategoryFilter from "./CategoryFilter";
+import Header from "./Header";
+import { useState } from "react";
 
 export default function HomeLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+      {/* Header */}
+      <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-      <div className="flex flex-1 mt-14">
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="flex flex-1 pt-14">
+        {/* Sidebar */}
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-        <main
-          className={`flex-1 transition-all duration-300 ${
-            sidebarOpen ? "ml-60" : "ml-0"
-          }`}
-        >
-          <CategoryFilter />
-          <div className="w-full">{children}</div>
+        {/* Main Content */}
+        <main className="flex-1 min-w-0">
+          {children}
         </main>
       </div>
     </div>

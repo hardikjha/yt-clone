@@ -6,17 +6,18 @@ export default function VideoGrid({ videos = [] }) {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto px-2 sm:px-4">
+    <div className="w-full max-w-full px-2 sm:px-4">
       <div
         className="
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          md:grid-cols-2
-          lg:grid-cols-3
-          xl:grid-cols-4
+          grid 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-4 
           gap-4
-          w-full
+          w-full 
+          max-w-full
+          box-border
         "
       >
         {videos.map((video, i) => {

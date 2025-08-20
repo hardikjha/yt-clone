@@ -6,7 +6,10 @@ import LogoImg from "../img/logo.png";
 
 export default function Header({ onToggleSidebar }) {
   const user = JSON.parse(localStorage.getItem("user"));
-  const defaultAvatar = "https://example.com/default-avatar.png";
+  // Use a real fallback avatar
+  const defaultAvatar =
+    "https://ui-avatars.com/api/?name=User&background=random";
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,7 +26,7 @@ export default function Header({ onToggleSidebar }) {
   const handleSearch = () => {
     if (!searchQuery.trim()) return;
     navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
-    setShowMobileSearch(false); // auto close on mobile
+    setShowMobileSearch(false);
   };
 
   const handleKeyPress = (e) => {
@@ -99,7 +102,8 @@ export default function Header({ onToggleSidebar }) {
             <img
               src={user.avatar || defaultAvatar}
               alt="avatar"
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover"
+              onError={(e) => (e.currentTarget.src = defaultAvatar)}
             />
             <span className="hidden sm:inline font-medium">
               {user.username}

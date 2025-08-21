@@ -1,9 +1,9 @@
-YouTube Clone - MERN Stack
+## YouTube Clone - MERN Stack
 
-A responsive YouTube-like video platform built with **React
+A YouTube-like video platform built with **React
 (frontend)**, **Node.js + Express (backend)**, and **MongoDB
 (database)**.\
-It allows users to upload, watch, like/dislike videos, add/edit/delete
+It allows users to watch, like/dislike videos, add/edit/delete
 comments, and view suggested videos.
 
 ------------------------------------------------------------------------

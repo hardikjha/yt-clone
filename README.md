@@ -72,22 +72,19 @@ comments, and view suggested videos.
 
 ``` bash
 git clone https://github.com/hardikjha/yt-clone.git
-cd youtube-clone
+cd server
 ```
 
 ### 2️⃣ Backend Setup
 
-``` bash
-cd server
-npm install
-```
 
--   Create a `.env` file in `backend/`:
+-   Create a `.env` file in `server/`:
 
 ``` env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 ```
+**Note:** This step is not required if you have the project submssion zip (it already contains the original env file)
 
 -   Run the backend:
 
@@ -112,6 +109,7 @@ npm install
 ``` bash
 npm run dev
 ```
+**Note:** The project has been tested on multiple PCs, if it throws an error stating chrome.js in node_modules is virus infected, then run 'npm install lucide-react@latest' in the terminal or add node_modules folder to your Windows Defender or Antivirus' exclusion list.
 
 ------------------------------------------------------------------------
 
